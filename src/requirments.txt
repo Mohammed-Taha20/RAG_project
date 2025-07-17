@@ -3,3 +3,6 @@ uvicorn[standard]
 pydantic
 python-multipart
 python-dotenv
+aiofiles
+langchain
+PyMuPDF

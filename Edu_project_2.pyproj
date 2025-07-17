@@ -23,12 +23,20 @@
   <ItemGroup>
     <Compile Include="src\controller\BaseController.py" />
     <Compile Include="src\controller\DataController.py" />
+    <Compile Include="src\controller\ProcessController.py" />
+    <Compile Include="src\controller\ProjectController.py" />
     <Compile Include="src\controller\__init__.py" />
     <Compile Include="src\main.py" />
     <Compile Include="src\helpers\config.py" />
     <Compile Include="src\helpers\__init__.py" />
+    <Compile Include="src\models\enums\ProcessingEnums.py" />
+    <Compile Include="src\models\enums\ResponseEnums.py" />
+    <Compile Include="src\models\enums\__init__.py" />
+    <Compile Include="src\models\__init__.py" />
     <Compile Include="src\routes\base.py" />
     <Compile Include="src\routes\data.py" />
+    <Compile Include="src\routes\schema\data.py" />
+    <Compile Include="src\routes\schema\__init__.py" />
     <Compile Include="src\routes\__init__.py" />
   </ItemGroup>
   <ItemGroup>
@@ -37,14 +45,20 @@
     <Content Include=".gitignore" />
     <Content Include="README.md" />
     <Content Include="src\.gitignore" />
+    <Content Include="src\assist\.gitignore" />
+    <Content Include="src\assist\.gitkeep" />
     <Content Include="src\requirments.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\assist\" />
+    <Folder Include="src\assist\files\" />
     <Folder Include="src\helpers\" />
     <Folder Include="src\" />
+    <Folder Include="src\models\" />
+    <Folder Include="src\models\enums\" />
     <Folder Include="src\routes\" />
     <Folder Include="src\controller\" />
+    <Folder Include="src\routes\schema\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

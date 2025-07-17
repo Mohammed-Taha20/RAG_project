@@ -1,0 +1,58 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>17c59bf2-f7bc-4911-9437-808ced71f9a5</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>src\main.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>Edu_project_2</Name>
+    <RootNamespace>Edu_project_2</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="src\controller\BaseController.py" />
+    <Compile Include="src\controller\DataController.py" />
+    <Compile Include="src\controller\__init__.py" />
+    <Compile Include="src\main.py" />
+    <Compile Include="src\helpers\config.py" />
+    <Compile Include="src\helpers\__init__.py" />
+    <Compile Include="src\routes\base.py" />
+    <Compile Include="src\routes\data.py" />
+    <Compile Include="src\routes\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\.env" />
+    <Content Include="src\.env.example" />
+    <Content Include=".gitignore" />
+    <Content Include="README.md" />
+    <Content Include="src\.gitignore" />
+    <Content Include="src\requirments.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\assist\" />
+    <Folder Include="src\helpers\" />
+    <Folder Include="src\" />
+    <Folder Include="src\routes\" />
+    <Folder Include="src\controller\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

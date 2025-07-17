@@ -11,7 +11,11 @@ class Settings(BaseSettings):
     APP_description:str
     APP_version:str
     APP_author:str
-
+    file_allowed_types : list
+    file_max_size : int
+    file_default_chunk_size : int
+    MONGODB_URI : str
+    mongo_db_name : str
 def get_settings() -> Settings:
     """
     Load and return the application settings.

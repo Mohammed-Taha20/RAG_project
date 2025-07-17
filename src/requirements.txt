@@ -1,0 +1,13 @@
+fastapi[standard]
+uvicorn[standard]
+pydantic
+python-multipart
+python-dotenv
+aiofiles
+langchain
+PyMuPDF
+motor
+pydantic-settings
+pydantic-mongo
+langchain_community
+pymongo

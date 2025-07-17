@@ -21,30 +21,56 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Docker\Dockerfile" />
     <Compile Include="src\controller\BaseController.py" />
     <Compile Include="src\controller\DataController.py" />
+    <Compile Include="src\controller\ProcessController.py" />
+    <Compile Include="src\controller\ProjectController.py" />
     <Compile Include="src\controller\__init__.py" />
     <Compile Include="src\main.py" />
     <Compile Include="src\helpers\config.py" />
     <Compile Include="src\helpers\__init__.py" />
+    <Compile Include="src\models\ChunkModel.py" />
+    <Compile Include="src\models\enums\db_enum.py" />
+    <Compile Include="src\models\enums\ProcessingEnums.py" />
+    <Compile Include="src\models\enums\ResponseEnums.py" />
+    <Compile Include="src\models\enums\__init__.py" />
+    <Compile Include="src\models\MyBaseModel.py" />
+    <Compile Include="src\models\ProjectModel.py" />
+    <Compile Include="src\models\schema\data_chunck.py" />
+    <Compile Include="src\models\schema\project.py" />
+    <Compile Include="src\models\schema\__init__.py" />
+    <Compile Include="src\models\__init__.py" />
     <Compile Include="src\routes\base.py" />
     <Compile Include="src\routes\data.py" />
+    <Compile Include="src\routes\schema\data.py" />
+    <Compile Include="src\routes\schema\__init__.py" />
     <Compile Include="src\routes\__init__.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Docker\.gitignore" />
+    <Content Include="Docker\docker-compose.yml" />
     <Content Include="src\.env" />
     <Content Include="src\.env.example" />
     <Content Include=".gitignore" />
     <Content Include="README.md" />
     <Content Include="src\.gitignore" />
-    <Content Include="src\requirments.txt" />
+    <Content Include="src\assist\.gitignore" />
+    <Content Include="src\assist\.gitkeep" />
+    <Content Include="src\requirements.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Docker\" />
     <Folder Include="src\assist\" />
+    <Folder Include="src\assist\files\" />
     <Folder Include="src\helpers\" />
     <Folder Include="src\" />
+    <Folder Include="src\models\" />
+    <Folder Include="src\models\enums\" />
+    <Folder Include="src\models\schema\" />
     <Folder Include="src\routes\" />
     <Folder Include="src\controller\" />
+    <Folder Include="src\routes\schema\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

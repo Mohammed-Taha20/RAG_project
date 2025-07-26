@@ -21,7 +21,7 @@ async def upload_data(request: Request, project_id: str, file: UploadFile,
                       app_settings: Settings = Depends(get_settings)):
         
     
-    project_model = ProjectModel(dp_client=request.app.dp_client)
+    project_model = ProjectModel(dp_client=request.app.state.dp_client)
 
     project = await project_model.get_project_create_one(
         project_id=project_id
@@ -77,7 +77,7 @@ async def process_data(request: Request,project_id: str, process_request: proces
     
 
 
-    project_model = ProjectModel(dp_client=request.app.dp_client)
+    project_model = ProjectModel(dp_client=request.app.state.dp_client)
 
     project = await project_model.get_project_create_one(
         project_id=project_id
@@ -107,7 +107,7 @@ async def process_data(request: Request,project_id: str, process_request: proces
         for i,chunk in enumerate(file_chunks) if chunk is not None
         ]
 
-    chunk_model = ChunkModel(dp_client=request.app.dp_client)
+    chunk_model = ChunkModel(dp_client=request.app.state.dp_client)
     if do_reset == 1 :
         _ = await chunk_model.delete_chunks_by_project_id(project_id=project_id)
     

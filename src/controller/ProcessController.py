@@ -22,13 +22,23 @@ class ProcessController(BaseController):
 
 
     def get_file_loader(self , file_id:str):
+        
+        file_id = file_id.strip().replace('\n', '').replace('\r', '')
+        file_id = os.path.normpath(file_id)
+
+        
         file_ext = self.get_file_extension(file_id=file_id)
+
+        file_path = os.path.normpath(os.path.join(self.project_path, file_id))
+
+
         if file_ext == Processingextension.TXT.value:
-            return TextLoader(file_path=os.path.join(self.project_path, file_id),encoding="utf-8")
+            return TextLoader(file_path, encoding="utf-8")
         elif file_ext == Processingextension.PDF.value:
-            return PyMuPDFLoader(file_path=os.path.join(self.project_path, file_id))
+            return PyMuPDFLoader(file_path)
         else:
             raise ValueError(f"Unsupported file extension: {file_ext}")
+
 
 
 
@@ -38,6 +48,8 @@ class ProcessController(BaseController):
         :param file_id: The ID of the file to retrieve.
         :return: The content of the file.
         """
+        
+        file_id = file_id.strip().replace('\n', '').replace('\r', '')
         loader = self.get_file_loader(file_id=file_id)
         return loader.load()
 

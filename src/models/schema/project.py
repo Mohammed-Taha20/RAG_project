@@ -8,10 +8,9 @@ class Project(BaseModel):
 
     @validator('project_id')
     def validate_project_id(cls, value):
-        if not value.isalnum():
-            raise ValueError('project_id must be alphanumeric')
-        
-        return value
+        if not value.strip().isalnum():
+            raise ValueError("project_id must be alphanumeric")
+        return value.strip()
 
     class Config:
         arbitrary_types_allowed = True

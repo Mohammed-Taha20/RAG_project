@@ -1,16 +1,19 @@
 import re
+import os
+import logging
+import aiofiles
+
 from fastapi import FastAPI, APIRouter,Depends ,UploadFile ,status ,Request,File
 from fastapi.responses import JSONResponse
-import os
+
+from .schema.data import process_request
 from helpers.config import get_settings , Settings
 from controller import dataController , ProjectController ,BaseController ,ProcessController
-from models import Responsesignal
-from models.ProjectModel import ProjectModel
-from models.ChunkModel import ChunkModel
-import logging
-from .schema.data import process_request
-import aiofiles
-from models.schema import DataChunck
+from models.enums import Responsesignal , Assist_type_enum
+from models.schema import DataChunck , Assist
+from models import ProjectModel,ChunkModel,AssistModel
+
+
 
 logger = logging.getLogger('uvicorn.error')
 
@@ -21,7 +24,7 @@ async def upload_data(request: Request, project_id: str, file: UploadFile,
                       app_settings: Settings = Depends(get_settings)):
         
     
-    project_model = ProjectModel(dp_client=request.app.state.dp_client)
+    project_model =await ProjectModel.create_instance(dp_client=request.app.state.dp_client)
 
     project = await project_model.get_project_create_one(
         project_id=project_id
@@ -61,10 +64,21 @@ async def upload_data(request: Request, project_id: str, file: UploadFile,
             }
         )
 
+    assist_model = await AssistModel.create_instance(dp_client=request.app.state.dp_client)
+
+    Assist_resourses = Assist(
+        assist_project_id = project.id,
+        assist_type = Assist_type_enum.File.value ,
+        assist_name = file_id,
+        assist_size = int(os.path.getsize(file_path))
+        )
+    
+    assist_rec = await assist_model.create_assist(assist=Assist_resourses)
+
     return JSONResponse(
             content={
                 "signal": Responsesignal.file_uploaded_successfully.value,
-                "file_id": file_id,
+                "file_id": str(assist_rec.id),
             }
         )
 
@@ -77,7 +91,7 @@ async def process_data(request: Request,project_id: str, process_request: proces
     
 
 
-    project_model = ProjectModel(dp_client=request.app.state.dp_client)
+    project_model =await ProjectModel.create_instance(dp_client=request.app.state.dp_client)
 
     project = await project_model.get_project_create_one(
         project_id=project_id
@@ -107,12 +121,14 @@ async def process_data(request: Request,project_id: str, process_request: proces
         for i,chunk in enumerate(file_chunks) if chunk is not None
         ]
 
-    chunk_model = ChunkModel(dp_client=request.app.state.dp_client)
+    chunk_model = await ChunkModel.create_instance(dp_client=request.app.state.dp_client)
+    deleted_count= 0
     if do_reset == 1 :
-        _ = await chunk_model.delete_chunks_by_project_id(project_id=project_id)
+        deleted_count = await chunk_model.reset()
     
     inserted_count = await chunk_model.insert_many_chunks(chunk=chunk_recs)
     return JSONResponse({
         "content":Responsesignal.processing_successful.value,
-        "inserted_count":inserted_count
+        "inserted_count":inserted_count,
+        "deleted_count": deleted_count
     })

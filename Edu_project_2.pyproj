@@ -31,12 +31,15 @@
     <Compile Include="src\helpers\config.py" />
     <Compile Include="src\helpers\__init__.py" />
     <Compile Include="src\models\ChunkModel.py" />
+    <Compile Include="src\models\enums\Assist_type_enums.py" />
     <Compile Include="src\models\enums\db_enum.py" />
     <Compile Include="src\models\enums\ProcessingEnums.py" />
     <Compile Include="src\models\enums\ResponseEnums.py" />
     <Compile Include="src\models\enums\__init__.py" />
     <Compile Include="src\models\MyBaseModel.py" />
     <Compile Include="src\models\ProjectModel.py" />
+    <Compile Include="src\models\schema\assist.py" />
+    <Compile Include="src\models\Assistmodel.py" />
     <Compile Include="src\models\schema\data_chunck.py" />
     <Compile Include="src\models\schema\project.py" />
     <Compile Include="src\models\schema\__init__.py" />

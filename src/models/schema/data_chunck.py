@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional, List
+from typing import Optional
 from bson.objectid import ObjectId
 
 class DataChunck(BaseModel):
@@ -11,3 +11,13 @@ class DataChunck(BaseModel):
 
     class Config:
         arbitrary_types_allowed = True
+
+    @classmethod
+    def get_indexes(cls):
+        return [
+            {
+            "key": [("chunck_project_id", 1)],
+            "unique": False,
+            "name": "chunck_project_id_index"
+            }
+        ]

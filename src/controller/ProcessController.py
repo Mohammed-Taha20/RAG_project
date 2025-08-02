@@ -22,15 +22,13 @@ class ProcessController(BaseController):
 
 
     def get_file_loader(self , file_id:str):
-        
-        file_id = file_id.strip().replace('\n', '').replace('\r', '')
-        file_id = os.path.normpath(file_id)
-
-        
+        #file_id = file_id.strip().replace('\n', '').replace('\r', '')
+        #file_id = os.path.normpath(file_id)
         file_ext = self.get_file_extension(file_id=file_id)
 
         file_path = os.path.normpath(os.path.join(self.project_path, file_id))
-
+        if not os.path.exists(file_path):
+            return None
 
         if file_ext == Processingextension.TXT.value:
             return TextLoader(file_path, encoding="utf-8")
@@ -48,9 +46,10 @@ class ProcessController(BaseController):
         :param file_id: The ID of the file to retrieve.
         :return: The content of the file.
         """
-        
-        file_id = file_id.strip().replace('\n', '').replace('\r', '')
         loader = self.get_file_loader(file_id=file_id)
+        if not loader:
+            return None
+      
         return loader.load()
 
     def file_content_processing(self , file_content : list ,file_id : str , chunk_size : int  , overlab_size :int ):

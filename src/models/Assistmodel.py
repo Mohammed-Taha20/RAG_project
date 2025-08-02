@@ -34,6 +34,14 @@ class AssistModel(MyBaseModel):
         return  assist
 
 
-    async def get_all_project_assists(self, assist_project_id: str):
-        return await self.collection.find({"assist_project_id": ObjectId(assist_project_id)}).to_list(length=None)
+    async def get_all_project_assists(self, assist_project_id: str, assist_type):
+        result  = await self.collection.find(
+            {"assist_project_id": ObjectId(assist_project_id), "assist_type": assist_type}).to_list(length=None)
+        return [Assist(**item) for item in result] if result else []
+
+    async def is_exist(self , assist_name : str):
+        result  = await self.collection.find_one({"assist_name": assist_name})
+        if result:
+            return True
+        return False
         

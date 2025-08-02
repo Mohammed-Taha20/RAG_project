@@ -27,6 +27,7 @@
     <Compile Include="src\controller\ProcessController.py" />
     <Compile Include="src\controller\ProjectController.py" />
     <Compile Include="src\controller\__init__.py" />
+    <Compile Include="src\stores\llm\LLMinterface.py" />
     <Compile Include="src\main.py" />
     <Compile Include="src\helpers\config.py" />
     <Compile Include="src\helpers\__init__.py" />
@@ -49,6 +50,9 @@
     <Compile Include="src\routes\schema\data.py" />
     <Compile Include="src\routes\schema\__init__.py" />
     <Compile Include="src\routes\__init__.py" />
+    <Compile Include="src\stores\llm\LLMProviderFactory.py" />
+    <Compile Include="src\stores\llm\provider\GrokProvider.py" />
+    <Compile Include="src\stores\llm\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Docker\.gitignore" />
@@ -71,9 +75,12 @@
     <Folder Include="src\models\" />
     <Folder Include="src\models\enums\" />
     <Folder Include="src\models\schema\" />
+    <Folder Include="src\stores\llm\" />
+    <Folder Include="src\stores\" />
     <Folder Include="src\routes\" />
     <Folder Include="src\controller\" />
     <Folder Include="src\routes\schema\" />
+    <Folder Include="src\stores\llm\provider\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

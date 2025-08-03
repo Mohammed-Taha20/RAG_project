@@ -27,6 +27,7 @@
     <Compile Include="src\controller\ProcessController.py" />
     <Compile Include="src\controller\ProjectController.py" />
     <Compile Include="src\controller\__init__.py" />
+    <Compile Include="src\stores\llm\LLMenum.py" />
     <Compile Include="src\stores\llm\LLMinterface.py" />
     <Compile Include="src\main.py" />
     <Compile Include="src\helpers\config.py" />

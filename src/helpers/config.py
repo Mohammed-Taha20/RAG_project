@@ -1,3 +1,4 @@
+from sys import float_repr_style
 from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -16,6 +17,31 @@ class Settings(BaseSettings):
     file_default_chunk_size : int
     MONGODB_URI : str
     mongo_db_name : str
+
+    generation_groq_backend : str
+    generation_cohere_backend : str
+    Embedding_backend : str
+    
+    groq_api_key: str
+    groq_api_url : str
+    
+    cohere_api_key : str
+    
+    Generation_model_id : str
+    
+    Embedding_model_id: str
+    Embedding_model_size: int
+    
+    default_generation_max_output_token_size : int
+    default_temperature : float
+    default_input_max_chars : int
+
+
+    vector_db_backend : str
+    vector_db_path    : str
+    vector_db_distance: str 
+
+
 def get_settings() -> Settings:
     """
     Load and return the application settings.

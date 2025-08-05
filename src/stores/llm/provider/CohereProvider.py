@@ -1,15 +1,14 @@
 from ..LLMinterface import LLMinterface
-from ..LLMenum import LLMenumGroq
-from groq import Groq
+from ..LLMenum import LLMenumCohere , LLMenumDocumentType
 import logging
+import cohere
 
-class GrokProvider(LLMinterface):
-    def __init__(self , api_key:str , api_url:str,
+class CohereProvider(LLMinterface):
+    def __init__(self , api_key:str ,
                  default_generation_max_output_token_size : int,
                  default_temperature:float,
                  default_input_max_chars : int):
         self.api_key = api_key
-        self.api_url = api_url
         self.default_generation_max_output_token_size = default_generation_max_output_token_size
         self.default_temperature = default_temperature
         self.default_input_max_chars = default_input_max_chars
@@ -17,7 +16,7 @@ class GrokProvider(LLMinterface):
         self.generation_model_id = None
 
 
-        self.client = Groq(api_key = self.api_key,api_url = self.api_url) #https://console.groq.com/docs/text-chat
+        self.client = cohere.ClientV2(api_key = self.api_key) # client version 2
 
         self.logger = logging.getLogger(__name__)
 
@@ -38,27 +37,26 @@ class GrokProvider(LLMinterface):
         max_output_tokens = max_output_tokens if max_output_tokens else self.default_generation_max_output_token_size
         temprature = temprature if temprature else self.default_temperature
 
-        chat_history.append(self.contrust_prompt(prompt=prompt , role = LLMenumGroq.User.value))
+        chat_history.append(self.contrust_prompt(prompt=prompt , role = LLMenumCohere.User.value))
 
-        response = self.client.chat.completions(
+        response = self.client.chat(
             model = self.generation_model_id,
-            message=chat_history,
+            message = chat_history,
             temperature = temprature,
-            max_output_tokens = max_output_tokens
+            max_tokens = max_output_tokens
             )
-        if not response or not response.choices or len(response.choices)==0:
+        if not response or not response.message or not response.message.content  or len(response.message.content)==0:
             self.logger.error("empty response")
 
-        return response.choices[0].message.content
+        return response.message.content[0].text
 
+    
 
     def contrust_prompt(self, prompt: str, role: str):
         return {
             "role":role,
             "content" : self.process_text(prompt)
             }
+
+
     
-
-
-
-

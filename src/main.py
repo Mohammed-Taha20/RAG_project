@@ -1,13 +1,14 @@
-import os
 from fastapi import FastAPI
 from routes import base, data
 from motor.motor_asyncio import AsyncIOMotorClient
 from helpers.config import get_settings
 from contextlib import asynccontextmanager
+from stores.llm.LLMProviderFactory import LLMProviderFactory
+import logging
 
-MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
-if not MONGODB_URI:
-    raise ValueError("MONGODB_URI environment variable is not set.")
+logger = logging.getLogger(__name__)
+
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -18,12 +19,23 @@ async def lifespan(app: FastAPI):
     app.state.mongo_conn = mongo_conn
     app.state.dp_client = dp_client
 
+
     print("MongoDB connected")
+
+    llmProviderFactory = LLMProviderFactory(settings)
+
+    #generation_client
+    app.state.generation_client = llmProviderFactory.create(provider=settings.generation_groq_backend)
+    app.state.generation_client.set_generation_model(model_name=settings.Generation_model_id)
+    #embedding_client
+    app.state.embedding_client = llmProviderFactory.create(provider=settings.Embedding_backend)
+    app.state.embedding_client.set_embedings_model(model_name=settings.Embedding_model_id,embeding_size = settings.Embedding_model_size)
+
 
     yield
 
     mongo_conn.close()
-    print("MongoDB disconnected")
+    logger.info("MongoDB disconnected")
 
 app = FastAPI(lifespan=lifespan)
 
@@ -41,14 +53,4 @@ app.include_router(data.data_router)
 
 
 
-
-#@app.on_event("startup")
-#async def startup_event():
-#    settings = get_settings()
-#    app.mongo_conn = AsyncIOMotorClient(MONGODB_URI)
-#    app.dp_client = app.mongo_conn[settings.mongo_db_name]
-#
-#@app.on_event("shutdown")
-#async def shutdown_event():
-#    app.mongo_conn.close()
 

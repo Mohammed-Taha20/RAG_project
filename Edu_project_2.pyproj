@@ -52,8 +52,16 @@
     <Compile Include="src\routes\schema\__init__.py" />
     <Compile Include="src\routes\__init__.py" />
     <Compile Include="src\stores\llm\LLMProviderFactory.py" />
+    <Compile Include="src\stores\llm\provider\CohereProvider.py" />
+    <Compile Include="src\stores\llm\provider\EmbeddingProvider.py" />
     <Compile Include="src\stores\llm\provider\GrokProvider.py" />
     <Compile Include="src\stores\llm\__init__.py" />
+    <Compile Include="src\stores\VectorDB\provider\QDrantDB.py" />
+    <Compile Include="src\stores\VectorDB\provider\__init__.py" />
+    <Compile Include="src\stores\VectorDB\VectorDBInterface.py" />
+    <Compile Include="src\stores\VectorDB\VectorProviderFactory.py" />
+    <Compile Include="src\stores\VectorDB\VectorsEnums.py" />
+    <Compile Include="src\stores\VectorDB\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Docker\.gitignore" />
@@ -82,6 +90,8 @@
     <Folder Include="src\controller\" />
     <Folder Include="src\routes\schema\" />
     <Folder Include="src\stores\llm\provider\" />
+    <Folder Include="src\stores\VectorDB\" />
+    <Folder Include="src\stores\VectorDB\provider\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

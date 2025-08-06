@@ -15,4 +15,6 @@ class Responsesignal(Enum):
     processing_successful = "Processing successful"
     No_files_found = "No files found"
     donot_insert_file_id = "Do not insert file ID"
+    inserting_into_vectorDB_error = "cant insert in VectorDB"
+    inserting_into_vectorDB_success ="inserting finished"
     

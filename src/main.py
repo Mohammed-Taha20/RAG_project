@@ -4,6 +4,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from helpers.config import get_settings
 from contextlib import asynccontextmanager
 from stores.llm.LLMProviderFactory import LLMProviderFactory
+from stores.VectorDB.VectorProviderFactory import VectorProviderFactory
 import logging
 
 logger = logging.getLogger(__name__)
@@ -30,12 +31,16 @@ async def lifespan(app: FastAPI):
     #embedding_client
     app.state.embedding_client = llmProviderFactory.create(provider=settings.Embedding_backend)
     app.state.embedding_client.set_embedings_model(model_name=settings.Embedding_model_id,embeding_size = settings.Embedding_model_size)
-
+    #vector_client 
+    app.state.vectordb_client = VectorProviderFactory.create(provider_name=settings.vector_db_backend)
+    app.state.vectordb_client.connect()
 
     yield
 
     mongo_conn.close()
     logger.info("MongoDB disconnected")
+    app.state.vectordb_client.disconnect()
+    
 
 app = FastAPI(lifespan=lifespan)
 

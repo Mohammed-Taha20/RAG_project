@@ -52,7 +52,7 @@ class QDrantDB(VectorDBInterface):
             except Exception as e:
                 self.logger.error(f"Error deleting collection {collection_name}: {e}")
 
-    def create_collection(self, collection_name: str , embedding_size :int , do_reset : bool) -> None:
+    def create_collection(self, collection_name: str , embedding_size :int , do_reset : int) -> None:
         if self.is_collection_exist(collection_name):
             if do_reset:
                 self.delete_collection(collection_name)
@@ -83,7 +83,7 @@ class QDrantDB(VectorDBInterface):
                     payload = {"text": text, "metadata": metadata},
 
                     )  
-                         ])
+                        ])
             return True
         except Exception as e:
             self.logger.error(f"Error inserting document into collection {collection_name}: {e}")
@@ -114,7 +114,7 @@ class QDrantDB(VectorDBInterface):
 
                 )  
                 for text, vector, metadata in zip(batch_text, batch_vector, batch_metadata)
-                     ]
+                    ]
             try:
                 _ = self.client.upload_collection(
                 collection_name = collection_name,

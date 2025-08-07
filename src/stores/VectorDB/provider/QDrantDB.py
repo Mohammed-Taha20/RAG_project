@@ -28,7 +28,7 @@ class QDrantDB(VectorDBInterface):
 
     def is_collection_exist(self, collection_name: str) -> bool:
         try:
-            return self.client.collection_exist(collection_name=collection_name)
+            return self.client.collection_exists(collection_name=collection_name)
         except Exception as e:
             self.logger.error(f"Error checking collection existence: {e}")
             return False
@@ -52,21 +52,26 @@ class QDrantDB(VectorDBInterface):
             except Exception as e:
                 self.logger.error(f"Error deleting collection {collection_name}: {e}")
 
-    def create_collection(self, collection_name: str , embedding_size :int , do_reset : int) -> None:
+    def create_collection(self, collection_name: str, embedding_size: int, do_reset: int) -> bool:
         if self.is_collection_exist(collection_name):
             if do_reset:
+                self.logger.info(f"Collection {collection_name} exists. Resetting it.")
                 self.delete_collection(collection_name)
             else:
                 self.logger.warning(f"Collection {collection_name} already exists. Use do_reset=True to recreate it.")
-                return
+                return False  
+    
         try:
-            collection = self.client.create_collection(
+            self.client.create_collection(
                 collection_name=collection_name,
-                vectors_config=models.VectorParams(size=embedding_size, distance=self.distance_method))
+                vectors_config=models.VectorParams(size=embedding_size, distance=self.distance_method)
+            )
+            self.logger.info(f"Collection created: {collection_name}")
             return True
         except Exception as e:
             self.logger.error(f"Error creating collection {collection_name}: {e}")
             return False
+    
 
 
 
@@ -79,6 +84,7 @@ class QDrantDB(VectorDBInterface):
                 collection_name = collection_name,
                 records = [
                     models.Record(
+                        id = rec_id,  # Optional, can be None
                     vector = vector,
                     payload = {"text": text, "metadata": metadata},
 
@@ -98,7 +104,7 @@ class QDrantDB(VectorDBInterface):
         if metadata is None:
             metadata = [None]*len(text)
         if rec_id is None:
-            rec_id = [None]*len(text)
+            rec_id = list(range(len(text)))  # Generate default IDs if rec_id is None
 
         for i in range (0,len(text),batch_size):
             batch_text = text[i:i+batch_size]
@@ -109,17 +115,22 @@ class QDrantDB(VectorDBInterface):
 
             batch_records = [
                 models.Record(
-                vector = vector,
-                payload = {"text": text, "metadata": metadata},
-
-                )  
-                for text, vector, metadata in zip(batch_text, batch_vector, batch_metadata)
-                    ]
+                    id = rec_id_item,  
+                    vector = vector_item,
+                    payload = {"text": text_item, "metadata": metadata_item},
+                )
+                for rec_id_item, text_item, vector_item, metadata_item in zip(batch_rec_id, batch_text, batch_vector, batch_metadata)
+]
             try:
                 _ = self.client.upload_collection(
-                collection_name = collection_name,
-                records = batch_records
+                    collection_name = collection_name,
+                    vectors = [r.vector for r in batch_records],
+                    payload = [r.payload for r in batch_records],
+                    ids = [r.id for r in batch_records],
                 )
+
+                
+
         
 
             except Exception as e:

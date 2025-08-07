@@ -7,9 +7,10 @@ class VectorProviderFactory():
         self.config = config
         self.baseController = BaseController()
 
-    def create(self , provider_name:str):
+    def create(self,provider_name:str):
         if provider_name == VectorDBenum.VectorDB.value:
-            db_path = self.baseController.get_db_path(self.config.vector_db_path)
+            db_path = self.baseController.get_db_path(db_name=self.config.vector_db_path)
+
             return QDrantDB(db_path=db_path, 
                             distance_method=self.config.vector_db_distance)
         else:

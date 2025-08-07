@@ -23,6 +23,13 @@ class CohereProvider(LLMinterface):
     def set_generation_model(self, model_name: str): 
         self.generation_model_id = model_name
 
+    def set_generation_model(self, model_name: str):
+        self.logger.error("Cohere does not support generation models in this version")
+        # Cohere does not support generation models in this version
+        # This method is here to satisfy the LLMinterface contract
+        # but it will not be used in this provider
+        self.generation_model_id = model_name
+
 
     def process_text(self, text:str):
         return text[:self.default_input_max_chars].strip()
@@ -50,6 +57,9 @@ class CohereProvider(LLMinterface):
 
         return response.message.content[0].text
 
+    def embed_text(self, text: str,document_type:str):
+        self.logger.error("cohere does not support embedding in this version")
+        return None
     
 
     def contrust_prompt(self, prompt: str, role: str):

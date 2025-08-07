@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routes import base, data
+from routes import base, data,nlp
 from motor.motor_asyncio import AsyncIOMotorClient
 from helpers.config import get_settings
 from contextlib import asynccontextmanager
@@ -24,6 +24,7 @@ async def lifespan(app: FastAPI):
     print("MongoDB connected")
 
     llmProviderFactory = LLMProviderFactory(settings)
+    vector_provider_factory = VectorProviderFactory(settings)
 
     #generation_client
     app.state.generation_client = llmProviderFactory.create(provider=settings.generation_groq_backend)
@@ -32,7 +33,7 @@ async def lifespan(app: FastAPI):
     app.state.embedding_client = llmProviderFactory.create(provider=settings.Embedding_backend)
     app.state.embedding_client.set_embedings_model(model_name=settings.Embedding_model_id,embeding_size = settings.Embedding_model_size)
     #vector_client 
-    app.state.vectordb_client = VectorProviderFactory.create(provider_name=settings.vector_db_backend)
+    app.state.vectordb_client = vector_provider_factory.create(provider_name=settings.vector_db_backend)
     app.state.vectordb_client.connect()
 
     yield
@@ -55,6 +56,7 @@ async def debug_db():
 # Include your routers
 app.include_router(base.base_router)
 app.include_router(data.data_router)
+app.include_router(nlp.nlp_router)
 
 
 

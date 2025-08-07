@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 
 from .schema.data import process_request
 from helpers.config import get_settings , Settings
-from controller import dataController , ProjectController ,BaseController ,ProcessController
+from controller import dataController , ProjectController ,ProcessController
 from models.enums import Responsesignal , Assist_type_enum
 from models.schema import DataChunck , Assist
 from models import ProjectModel,ChunkModel,AssistModel

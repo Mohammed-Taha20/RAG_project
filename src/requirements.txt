@@ -10,6 +10,7 @@ motor
 pydantic-settings
 pydantic-mongo
 langchain_community
+qdrant_client
 pymongo
 groq
 cohere

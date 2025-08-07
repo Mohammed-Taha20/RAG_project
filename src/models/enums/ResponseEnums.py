@@ -17,4 +17,5 @@ class Responsesignal(Enum):
     donot_insert_file_id = "Do not insert file ID"
     inserting_into_vectorDB_error = "cant insert in VectorDB"
     inserting_into_vectorDB_success ="inserting finished"
+    vectorDB_info_retrieved = "VectorDB info retrieved successfully"
     

@@ -21,7 +21,12 @@ class EmbeddingProvider(LLMinterface):
         self.logger = logging.getLogger(__name__)
 
 
-
+    def set_generation_model(self, model_name: str):
+        self.logger.error("Cohere does not support generation models in this version")
+        # Cohere does not support generation models in this version
+        # This method is here to satisfy the LLMinterface contract
+        # but it will not be used in this provider
+        self.generation_model_id = model_name
 
 
     def set_embedings_model(self, model_name: str , embeding_size:int):
@@ -30,7 +35,15 @@ class EmbeddingProvider(LLMinterface):
 
 
     def process_text(self, text:str):
-        return text[:self.default_input_max_chars].strip()
+        return [sentence.strip() for sentence in text.split('.') if sentence.strip()]
+
+    
+    def generate_text(self, prompt: str, max_output_tokens: int = None , chat_history : list =[] ,temprature : float = None):
+        self.logger.error("Cohere does not support generation models in this version")
+        # Cohere does not support generation models in this version
+        # This method is here to satisfy the LLMinterface contract
+        # but it will not be used in this provider
+        return None
 
 
     def embed_text(self, text: str,document_type:str):
@@ -52,3 +65,9 @@ class EmbeddingProvider(LLMinterface):
             self.logger.error("empty embedding")
 
         return response.embeddings.float[0]
+
+    def contrust_prompt(self, prompt: str, role: str):
+        return {
+            "role":role,
+            "content" : self.process_text(prompt)
+            }

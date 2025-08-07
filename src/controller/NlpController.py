@@ -1,7 +1,7 @@
 from .BaseController import BaseController
 from models.schema import Project ,DataChunck
 from typing import List
-from ..stores.llm.LLMenum import LLMenumDocumentType
+from stores.llm.LLMenum import LLMenumDocumentType
 
 class NlpController(BaseController):
     
@@ -11,6 +11,7 @@ class NlpController(BaseController):
         self.generation_client=generation_client
         self.embedding_client = embedding_client
         
+        
     def create_collection_name(self,project_id:str):
         return f"collection_{project_id}".strip()
     
@@ -18,11 +19,11 @@ class NlpController(BaseController):
         return self.vectordb_client.delete_collection(self.create_collection_name(project_id=Project.project_id))
     
     def get_vector_dbcollection_info(self,project:Project):
-        collection_name =self.create_collection_name(project_id=Project.project_id)
+        collection_name =self.create_collection_name(project_id=project.id)
         return self.vectordb_client.get_collection_info(collection_name)
     
-    def index_into_vector_db(self, project:Project , chunk:List[DataChunck],do_reset:int = 0):
-        collection_name =self.create_collection_name(project_id=Project.project_id)
+    def index_into_vector_db(self, project:Project , chunk:List[DataChunck],chunk_ids:list[int] , do_reset:int = 0):
+        collection_name =self.create_collection_name(project_id=project.id)
         
         texts = [c.chunck_text   for c in chunk]
         meta_data = [c.chunck_metadata for c in chunk]
@@ -35,8 +36,22 @@ class NlpController(BaseController):
         ]
         
         
-        collection = self.vectordb_client.create_collection(collection_name=collection_name  , embedding_size =self.embedding_client.embedding_model_size , do_reset =do_reset)
+        print(f" Creating collection: {collection_name}")
+        collection = self.vectordb_client.create_collection(
+            collection_name=collection_name,
+            embedding_size=self.embedding_client.embedding_model_size,
+            do_reset=do_reset
+        )
+        print(f" Collection created: {collection}")
         
-        _ = self.vectordb_client.insert_many(collection_name =collection_name, text=texts , vector=vectors , metadata = meta_data)
+        result = self.vectordb_client.insert_many(
+            collection_name=collection_name,
+            text=texts,
+            vector=vectors,
+            rec_id=chunk_ids,
+            metadata=meta_data
+        )
+        print(f" Insert result: {result}")
+
 
         return True

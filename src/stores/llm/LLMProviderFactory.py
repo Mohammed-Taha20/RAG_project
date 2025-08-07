@@ -2,7 +2,7 @@ from .LLMenum import LLMenum
 from .provider import CohereProvider,GrokProvider,EmbeddingProvider
 from helpers.config import Settings
 
-class LLMProviderFactory(object):
+class LLMProviderFactory:
 
     def __init__(self,config:Settings):
         self.config = config

@@ -17,12 +17,19 @@ class GrokProvider(LLMinterface):
         self.generation_model_id = None
 
 
-        self.client = Groq(api_key = self.api_key,api_url = self.api_url) #https://console.groq.com/docs/text-chat
+        self.client = Groq(api_key = self.api_key ,base_url = api_url ) #https://console.groq.com/docs/text-chat
 
         self.logger = logging.getLogger(__name__)
 
     def set_generation_model(self, model_name: str): 
         self.generation_model_id = model_name
+
+    def set_embedings_model(self, model_name: str , embeding_size:int):
+        self.logger.error("Groq does not support embedding models in this version")
+
+    def embed_text(self, text: str,document_type:str):
+        self.logger.error("Groq does not support embedding in this version")
+        return None
 
 
     def process_text(self, text:str):

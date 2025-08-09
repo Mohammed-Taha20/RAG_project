@@ -9,9 +9,9 @@ class VectorProviderFactory():
 
     def create(self,provider_name:str):
         if provider_name == VectorDBenum.VectorDB.value:
-            db_path = self.baseController.get_db_path(db_name=self.config.vector_db_path)
 
-            return QDrantDB(db_path=db_path, 
+            return QDrantDB(QDrantDB_api = self.config.qdrant_api_key,
+                            QDrantDB_url = self.config.qdrant_api_url,
                             distance_method=self.config.vector_db_distance)
         else:
             raise ValueError(f"Unsupported vector database provider: {provider_name}")

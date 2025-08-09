@@ -18,4 +18,8 @@ class Responsesignal(Enum):
     inserting_into_vectorDB_error = "cant insert in VectorDB"
     inserting_into_vectorDB_success ="inserting finished"
     vectorDB_info_retrieved = "VectorDB info retrieved successfully"
+    vectorDB_search_not_found = "No results found in VectorDB for the search query"
+    vectorDB_search_success = "Search results retrieved successfully"
+    Rag_answer_error = "Error in RAG answer generation"
+    Rag_answer_success = "RAG answer generated successfully"
     

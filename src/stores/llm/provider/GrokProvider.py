@@ -13,7 +13,7 @@ class GrokProvider(LLMinterface):
         self.default_generation_max_output_token_size = default_generation_max_output_token_size
         self.default_temperature = default_temperature
         self.default_input_max_chars = default_input_max_chars
-
+        self.enum = LLMenumGroq
         self.generation_model_id = None
 
 
@@ -33,6 +33,9 @@ class GrokProvider(LLMinterface):
 
 
     def process_text(self, text:str):
+        if not text:  
+            self.logger.error("No text provided to process_text")
+            return None
         return text[:self.default_input_max_chars].strip()
 
     def generate_text(self, prompt: str, max_output_tokens: int = None , chat_history : list =[] ,temprature : float = None):
@@ -45,13 +48,15 @@ class GrokProvider(LLMinterface):
         max_output_tokens = max_output_tokens if max_output_tokens else self.default_generation_max_output_token_size
         temprature = temprature if temprature else self.default_temperature
 
-        chat_history.append(self.contrust_prompt(prompt=prompt , role = LLMenumGroq.User.value))
+        messages = []
+        messages.append(chat_history)
+        messages.append(self.contrust_prompt(prompt=prompt , role = LLMenumGroq.User.value))
 
-        response = self.client.chat.completions(
+        response = self.client.chat.completions.create(
             model = self.generation_model_id,
-            message=chat_history,
+            messages=messages,
             temperature = temprature,
-            max_output_tokens = max_output_tokens
+            max_tokens = max_output_tokens
             )
         if not response or not response.choices or len(response.choices)==0:
             self.logger.error("empty response")

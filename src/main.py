@@ -5,6 +5,7 @@ from helpers.config import get_settings
 from contextlib import asynccontextmanager
 from stores.llm.LLMProviderFactory import LLMProviderFactory
 from stores.VectorDB.VectorProviderFactory import VectorProviderFactory
+from stores.llm.templates.template_parser import template_parser
 import logging
 
 logger = logging.getLogger(__name__)
@@ -27,7 +28,7 @@ async def lifespan(app: FastAPI):
     vector_provider_factory = VectorProviderFactory(settings)
 
     #generation_client
-    app.state.generation_client = llmProviderFactory.create(provider=settings.generation_groq_backend)
+    app.state.generation_client = llmProviderFactory.create(provider=settings.generation_cohere_backend)
     app.state.generation_client.set_generation_model(model_name=settings.Generation_model_id)
     #embedding_client
     app.state.embedding_client = llmProviderFactory.create(provider=settings.Embedding_backend)
@@ -35,6 +36,9 @@ async def lifespan(app: FastAPI):
     #vector_client 
     app.state.vectordb_client = vector_provider_factory.create(provider_name=settings.vector_db_backend)
     app.state.vectordb_client.connect()
+    # template_client
+    app.state.template_client = template_parser(language=settings.Default_language)
+
 
     yield
 

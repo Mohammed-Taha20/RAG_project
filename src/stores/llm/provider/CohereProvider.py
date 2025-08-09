@@ -14,7 +14,7 @@ class CohereProvider(LLMinterface):
         self.default_input_max_chars = default_input_max_chars
 
         self.generation_model_id = None
-
+        self.enum = LLMenumCohere
 
         self.client = cohere.ClientV2(api_key = self.api_key) # client version 2
 
@@ -23,12 +23,12 @@ class CohereProvider(LLMinterface):
     def set_generation_model(self, model_name: str): 
         self.generation_model_id = model_name
 
-    def set_generation_model(self, model_name: str):
+    def set_embedings_model(self, model_name: str):
         self.logger.error("Cohere does not support generation models in this version")
         # Cohere does not support generation models in this version
         # This method is here to satisfy the LLMinterface contract
         # but it will not be used in this provider
-        self.generation_model_id = model_name
+        self.set_embedings_model = model_name
 
 
     def process_text(self, text:str):
@@ -43,12 +43,15 @@ class CohereProvider(LLMinterface):
 
         max_output_tokens = max_output_tokens if max_output_tokens else self.default_generation_max_output_token_size
         temprature = temprature if temprature else self.default_temperature
+        
+        messages = []
+        messages.append(chat_history)
+        messages.append(self.contrust_prompt(prompt=prompt , role = LLMenumCohere.USER.value))
 
-        chat_history.append(self.contrust_prompt(prompt=prompt , role = LLMenumCohere.User.value))
-
+        print(f"Messages: {messages}")
         response = self.client.chat(
             model = self.generation_model_id,
-            message = chat_history,
+            messages = messages,
             temperature = temprature,
             max_tokens = max_output_tokens
             )

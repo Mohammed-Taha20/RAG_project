@@ -16,6 +16,7 @@ class EmbeddingProvider(LLMinterface):
         self.embedding_model_id = None
         self.embedding_model_size = None
 
+        self.enum = LLMenumCohere
         self.client = cohere.ClientV2(api_key = self.api_key) # client version 2
 
         self.logger = logging.getLogger(__name__)

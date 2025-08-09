@@ -55,6 +55,12 @@
     <Compile Include="src\stores\llm\provider\CohereProvider.py" />
     <Compile Include="src\stores\llm\provider\EmbeddingProvider.py" />
     <Compile Include="src\stores\llm\provider\GrokProvider.py" />
+    <Compile Include="src\stores\llm\templates\locales\ar\rag.py" />
+    <Compile Include="src\stores\llm\templates\locales\ar\__init__.py" />
+    <Compile Include="src\stores\llm\templates\locales\en\rag.py" />
+    <Compile Include="src\stores\llm\templates\locales\en\__init__.py" />
+    <Compile Include="src\stores\llm\templates\template_parser.py" />
+    <Compile Include="src\stores\llm\templates\__init__.py" />
     <Compile Include="src\stores\llm\__init__.py" />
     <Compile Include="src\stores\VectorDB\provider\QDrantDB.py" />
     <Compile Include="src\stores\VectorDB\provider\__init__.py" />
@@ -89,7 +95,11 @@
     <Folder Include="src\routes\" />
     <Folder Include="src\controller\" />
     <Folder Include="src\routes\schema\" />
+    <Folder Include="src\stores\llm\templates\" />
     <Folder Include="src\stores\llm\provider\" />
+    <Folder Include="src\stores\llm\templates\locales\" />
+    <Folder Include="src\stores\llm\templates\locales\en\" />
+    <Folder Include="src\stores\llm\templates\locales\ar\" />
     <Folder Include="src\stores\VectorDB\" />
     <Folder Include="src\stores\VectorDB\provider\" />
   </ItemGroup>

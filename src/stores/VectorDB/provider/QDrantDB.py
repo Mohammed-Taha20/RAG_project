@@ -6,10 +6,11 @@ import logging
 
 class QDrantDB(VectorDBInterface):
 
-    def __init__(self,db_path:str , distance_method:str):
+    def __init__(self,QDrantDB_api : str, QDrantDB_url : str , distance_method:str):
 
         self.client =None
-        self .db_path = db_path
+        self .QDrantDB_api = QDrantDB_api
+        self .QDrantDB_url = QDrantDB_url
         self .distance_method = None
 
         if distance_method is  DistanceMetricEnum.COSINE.value: # may be the is should be == 
@@ -21,7 +22,7 @@ class QDrantDB(VectorDBInterface):
 
 
     def connect(self) -> None:
-        self.client = QdrantClient(path = self.db_path)
+        self.client = QdrantClient(url = self.QDrantDB_url,api_key=self.QDrantDB_api)
 
     def disconnect(self) -> None:
         self.client =  None
@@ -32,6 +33,7 @@ class QDrantDB(VectorDBInterface):
         except Exception as e:
             self.logger.error(f"Error checking collection existence: {e}")
             return False
+    
     def list_all_collections(self)  -> list:
         try:
             return self.client.get_collections()

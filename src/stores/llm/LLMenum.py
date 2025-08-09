@@ -9,9 +9,9 @@ class LLMenumGroq(Enum):
     User = "user"
 
 class LLMenumCohere(Enum):
-    System = "SYSTEM"
-    User = "USER"
-    Assistant = "CHATBOT"
+    SYSTEM = "system"
+    USER = "user"
+    ASSISTANT = "assistant"
 
     search_doc="search_document"
     search_query="search_query"

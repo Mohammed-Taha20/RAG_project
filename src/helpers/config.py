@@ -1,4 +1,3 @@
-from sys import float_repr_style
 from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -40,6 +39,12 @@ class Settings(BaseSettings):
     vector_db_backend : str
     vector_db_path    : str
     vector_db_distance: str 
+
+    qdrant_api_key : str 
+    qdrant_api_url : str 
+
+    Default_language :str
+    supported_languages : list[str]
 
 
 def get_settings() -> Settings:

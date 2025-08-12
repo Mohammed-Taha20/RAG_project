@@ -114,7 +114,7 @@ async def answer_QA(request:Request , project_id :str ,search_request :SearchReq
                                  embedding_client = request.app.state.embedding_client,
                                  template_parser=request.app.state.template_client)
 
-    answer,full_prompt,chat_history = nlp_controller.answer_rag_questions(project=project , quary=search_request.text , limit=search_request.limit)
+    answer,full_prompt,chat_history = nlp_controller.answer_rag_questions(project=project , query=search_request.text , limit=search_request.limit)
 
     if not answer or len(answer)==0:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,

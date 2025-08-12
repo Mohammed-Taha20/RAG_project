@@ -78,9 +78,9 @@ class NlpController(BaseController):
         return json.loads(json.dumps(search_result, default=lambda x: x.__dict__))  # Convert to JSON serializable format
 
 
-    def answer_rag_questions(self,project:Project ,quary :str ,limit:int =5):
+    def answer_rag_questions(self,project:Project ,query :str ,limit:int =5):
         answer,full_prompt,chat_history = None, None, None
-        retrived_chunks = self.search_by_vector(project=project , text=quary , limit=limit)
+        retrived_chunks = self.search_by_vector(project=project , text=query , limit=limit)
 
         if not retrived_chunks or len(retrived_chunks)==0:
             self.logger.error("No retrived chunks found for the query.")
@@ -100,7 +100,8 @@ class NlpController(BaseController):
             for id, chunk in enumerate(retrived_chunks)
         ])
 
-        footer_prompt  = self.template_client.get(group = "rag", key = "footer_prompt")
+
+        footer_prompt  = self.template_client.get("rag","footer_prompt",{"query": query})
 
 
         chat_history = self.generation_client.contrust_prompt(
@@ -110,8 +111,6 @@ class NlpController(BaseController):
 
         full_prompt = "/n/n".join([document_prompt,footer_prompt])
 
-        print(f"Chat history: {chat_history}")
-        print (f"Full prompt: {full_prompt}")
         
 
         answer = self.generation_client.generate_text(
